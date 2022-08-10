@@ -33,6 +33,13 @@ def read_cli_arg():
         action='store_true',
         help='check connectivity asynchronously',
     )
+    parser.add_argument(
+        '-s',
+        '--scrape',
+        type=str,
+        default='',
+        help='scrapes all url data from given webpage'
+    )
     return parser.parse_args()
 
 def show_results(result, url, error=''):

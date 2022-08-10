@@ -5,11 +5,17 @@ import sys
 
 from urlcheck.checker import is_online, is_online_async
 from urlcheck.cli import read_cli_arg, show_results
+from urlcheck.link_scraper import scrape_links
 
 def main():
-    ''' runs url checker program '''
+    ''' 
+    runs url checker program 
+    '''
     user_args = read_cli_arg()
     urls = _get_urls(user_args)
+    to_scrape = user_args.scrape
+    if to_scrape:
+        urls = scrape_links(to_scrape)
     if not urls:
         print('Error: no URLs avaialble to check', file=sys.stderr)
         sys.exit(1)

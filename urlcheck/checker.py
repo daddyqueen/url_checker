@@ -6,7 +6,7 @@ from http.client import HTTPConnection
 # use to parse urls
 from urllib.parse import urlparse
 
-def is_online(url, timeout = 2):
+def is_online(url, timeout = 5):
     '''
     Returns True if website is online, raises exception if not.
     input: URL , number of seconds to try before timeout connection
@@ -27,7 +27,7 @@ def is_online(url, timeout = 2):
             connection.close()
     raise error
     
-async def is_online_async(url,timeout=2):
+async def is_online_async(url,timeout=60):
     '''
     checks online status asynchronously
     Returns True if website is online, raises exception if not.
