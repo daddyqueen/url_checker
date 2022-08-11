@@ -4,7 +4,7 @@ import pathlib
 import sys
 
 from urlcheck.checker import is_online, is_online_async
-from urlcheck.cli import read_cli_arg, show_results
+from urlcheck.cli import read_cli_arg, show_results, show_response
 from urlcheck.link_scraper import scrape_links
 
 def main():
@@ -14,12 +14,15 @@ def main():
     user_args = read_cli_arg()
     urls = _get_urls(user_args)
     to_scrape = user_args.scrape
+    make_request = user_args.request
     if to_scrape:
         urls = scrape_links(to_scrape)
     if not urls:
         print('Error: no URLs avaialble to check', file=sys.stderr)
         sys.exit(1)
-    if user_args.asynchronous:
+    if make_request and to_scrape:
+        _synchronous_check(urls,True)
+    elif user_args.asynchronous:
         asyncio.run(_asynchronous_check(urls))
     else:
         _synchronous_check(urls)
@@ -66,21 +69,28 @@ async def _asynchronous_check(urls):
         except Exception as e:
             res = False
             error = str(e)
-        show_results(res, url, error)
+        # if req==None:
+        #     show_results(res, url, error)
     await asyncio.gather(*(_check(url) for url in urls))
 
-def _synchronous_check(urls):
+def _synchronous_check(urls,req=False):
     '''
-    checks urls all at once
+    checks urls one by one in order
+    if req=True will perform a request for each url and display the response code
     '''
     for url in urls:
         error = ''
-        try:
-            res = is_online(url)
-        except Exception as e:
-            res=False
-            error=str(e)
-        show_results(res, url, error)
-    
+        # just checking connection
+        if req==False:
+            try:
+                res = is_online(url)
+            except Exception as e:
+                res=False
+                error=str(e)
+            show_results(res, url, error)
+        else:
+        # getting status code for each url
+            show_response(url)
+            
 if __name__=='__main__':
     main()

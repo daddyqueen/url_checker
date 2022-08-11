@@ -1,10 +1,12 @@
 # checker.py
 import aiohttp
 import asyncio
+import requests
 # make connection with url and handle http requests
 from http.client import HTTPConnection
 # use to parse urls
 from urllib.parse import urlparse
+
 
 def is_online(url, timeout = 5):
     '''
@@ -48,4 +50,4 @@ async def is_online_async(url,timeout=60):
             except Exception as e:
                 error = e
         raise error
-        
+
