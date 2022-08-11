@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-from urlcheck.cli import read_cli_arg
+from urlcheck.cli import read_cli_arg, make_error_file
 
 # user_args = read_cli_arg()
 
@@ -11,7 +11,9 @@ def scrape_links(URL):
     scrape links from URL
     will try to format URL if not in proper format
     input: URL
-    output: list of all links embedded in URL
+    output: 
+        success: list of all links embedded in URL
+        error: [error]
     '''
     # add ability to accept file, list or str as input?
 
@@ -24,8 +26,11 @@ def scrape_links(URL):
     try:
         res = requests.get(URL)
     except Exception as e:
-        raise e
-
+        # res=False
+        error = str(e)
+        # need to make this only output when outfile option is flagged otherwise runs every time
+        make_error_file(URL, error)
+        return []
     soup = BeautifulSoup(res.content, 'html.parser')
     link_list=[]
     for a in soup.find_all('a', href=True):

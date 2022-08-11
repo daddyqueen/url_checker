@@ -4,7 +4,7 @@ import pathlib
 import sys
 # additional files needed to run: checker.py, cli.py, link_scraper.py
 from urlcheck.checker import is_online, is_online_async
-from urlcheck.cli import read_cli_arg, show_results, show_response
+from urlcheck.cli import read_cli_arg, show_results, show_response, make_error_file
 from urlcheck.link_scraper import scrape_links
 
 def main():
@@ -19,6 +19,8 @@ def main():
     to_scrape = user_args.scrape
     # Bool for making request for status code
     make_request = user_args.request
+    # make outfile
+    outfile = user_args.output_file
     # scrape each url and add to list
     if to_scrape:
         # unpack list of urls from scrape_links into one list to process
@@ -31,15 +33,16 @@ def main():
     if not urls:
         print('Error: no URLs avaialble to check', file=sys.stderr)
         sys.exit(1)
+    
     # only run request option synchronously to avoid timeouts
     if make_request:
-        _synchronous_check(urls,True)
+        _synchronous_check(urls,outfile,True)
     # async option is best for different base urls 
     elif user_args.asynchronous:
-        asyncio.run(_asynchronous_check(urls))
+        asyncio.run(_asynchronous_check(urls,outfile))
     # all others default to synchronuous check
     else:
-        _synchronous_check(urls)
+        _synchronous_check(urls,outfile)
 
 def _get_urls(user_args) -> list:
     '''
@@ -70,7 +73,8 @@ def _read_file_urls(file) -> list:
             # strip and format each str
             urls = [url.strip() for url in urls_file]
             if urls:
-                _format_urls(urls)
+                urls=_format_urls(urls)
+                return urls
             # empty file error
             print('Error: input file "{file}" is empty',file=sys.stderr)
     else:
@@ -78,7 +82,7 @@ def _read_file_urls(file) -> list:
         print('Error: input file not found', file=sys.stderr)
     return []
 
-async def _asynchronous_check(urls):
+async def _asynchronous_check(urls, outfile):
     '''
     check urls asynchronously and determine online status for each link
     output prints results to console
@@ -90,10 +94,10 @@ async def _asynchronous_check(urls):
         except Exception as e:
             res = False
             error = str(e)
-        show_results(res, url, error)
+        show_results(res, url, outfile,error)
     await asyncio.gather(*(_check(url) for url in urls))
 
-def _synchronous_check(urls,req=False):
+def _synchronous_check(urls,outfile='',req=False):
     '''
     checks urls one by one in order that they are passed
     if req=True will perform a request for each url and display the response code
@@ -109,12 +113,16 @@ def _synchronous_check(urls,req=False):
             except Exception as e:
                 res=False
                 error=str(e)
-            show_results(res, url, error)
+            show_results(res, url, outfile,error)
         else:
         # getting status code for each url
-            show_response(url)
+            show_response(url, outfile)
 
 def _format_urls(urls:list) -> list:
+    '''
+    standardizes urls for ease of use
+    appends 'http://' to the front and '/' to the end of urls as needed.
+    '''
     formated_urls=[]
     for url in urls:
         if not url.startswith('http'):

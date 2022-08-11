@@ -14,7 +14,6 @@ def is_online(url, timeout = 5):
     input: URL , number of seconds to try before timeout connection
     output: bool/error
     '''
-
     error = Exception('something went wrong')
     parser = urlparse(url)
     host = parser.netloc or parser.path.split('/')[0]
@@ -27,6 +26,7 @@ def is_online(url, timeout = 5):
             error =e
         finally:
             connection.close()
+    
     raise error
     
 async def is_online_async(url,timeout=60):
