@@ -13,11 +13,13 @@ def scrape_links(URL):
     input: URL
     output: list of all links embedded in URL
     '''
-    # clean up user input
-    if not URL.startswith('http'):
-        URL = 'http://' + URL
-    if not URL.endswith('/'):
-        URL = URL + '/'
+    # add ability to accept file, list or str as input?
+
+    # # clean up user input
+    # if not URL.startswith('http'):
+    #     URL = 'http://' + URL
+    # if not URL.endswith('/'):
+    #     URL = URL + '/'
     # request page data
     try:
         res = requests.get(URL)

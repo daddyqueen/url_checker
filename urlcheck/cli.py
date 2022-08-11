@@ -33,13 +33,14 @@ def read_cli_arg():
         '-a',
         '--asynchronous',
         action='store_true',
-        help='check connectivity asynchronously',
+        help='check url connectivity asynchronously',
     )
     parser.add_argument(
         '-s',
         '--scrape',
-        type=str,
-        default='',
+        # type=str,
+        # default='',
+        action='store_true',
         help='scrapes all url data from given webpage',
     )
     parser.add_argument(
@@ -52,7 +53,8 @@ def read_cli_arg():
 
 def show_results(result, url, error=''):
     '''
-    prints program output to terminal
+    prints url connection status to terminal
+    displays error type if site is unavailable
     '''
     if result:
         print('🟢 Online ~~', end=' ')
@@ -63,6 +65,8 @@ def show_results(result, url, error=''):
 def show_response(url, error=None):
     '''
     prints program output to terminal if requests option was selected
+    will display request respose of url input or an error if site is unavailable 
+
     '''
     try:
         response = requests.get(url)
