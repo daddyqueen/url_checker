@@ -58,8 +58,7 @@ def read_cli_arg():
         metavar='OUTFILE',
         nargs='?',
         action='store',
-        # const='urlcheck_errors.txt',
-        default='urlcheck_errors.txt',
+        const='urlcheck_errors.txt',
         help='outputs text file for all url error that occur during program execution',
         required=False,
     )
@@ -103,7 +102,9 @@ def show_response(url, outfile,error=None):
     print(f'"{url}"')
 
 def make_error_file(url,error, outfile='urlcheck_errors.txt'):
-    # append errors to outfile
+    '''
+    append errors to outfile
+    '''
     with open(outfile, 'a') as f:
         f.write(f'{url}: {error}\n')
         

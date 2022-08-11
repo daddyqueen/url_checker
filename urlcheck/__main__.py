@@ -21,12 +21,14 @@ def main():
     make_request = user_args.request
     # make outfile
     outfile = user_args.output_file
+    # make outfile flag for scrape_links fn to prevent error file creation
+    outfile_bool = True if outfile==True else False
     # scrape each url and add to list
     if to_scrape:
         # unpack list of urls from scrape_links into one list to process
         unpacked_urls=[]
         for url in urls:
-            for link in scrape_links(url):
+            for link in scrape_links(url,outfile_bool):
                 unpacked_urls.append(link)
         urls=unpacked_urls
     # error if no urls to check
@@ -70,7 +72,7 @@ def _read_file_urls(file) -> list:
     file_path = pathlib.Path(file)
     if file_path.is_file():
         with file_path.open() as urls_file:
-            # strip and format each str
+            # strip and format each str, remove any errors
             urls = [url.strip() for url in urls_file]
             if urls:
                 urls=_format_urls(urls)
