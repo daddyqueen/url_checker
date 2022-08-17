@@ -1,10 +1,9 @@
 # link_scraper.py
+# additional files needed to run program: checker.py, cli.py, __main__.py
+
 from bs4 import BeautifulSoup
 import requests
-
 from urlcheck.cli import read_cli_arg, make_error_file
-
-# user_args = read_cli_arg()
 
 def scrape_links(url,outfile_bool=False):
     '''

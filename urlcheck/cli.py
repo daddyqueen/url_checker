@@ -1,7 +1,6 @@
 # cli.py
-
+# additional files needed to run program: checker.py, link_scraper.py, __main__.py
 import argparse
-# import json
 import requests
 
 def read_cli_arg():
@@ -42,24 +41,25 @@ def read_cli_arg():
         '-s',
         '--scrape',
         action='store_true',
-        help='scrapes all url data from given webpage',
+        help='scrapes all url data from input url(s)',
         required=False,
     )
     parser.add_argument( # request flag True
         '-r',
         '--request',
         action='store_true',
-        help='use to request status code of all urls on scraped page',
+        help='requests status code of all urls' ,
         required=False,
     )
-    parser.add_argument( # make error text file
+    parser.add_argument( # make error text file, 
+    # use const and nargs=? to allow default name to be passed
         '-o',
         '--output-file',
         metavar='OUTFILE',
         nargs='?',
         action='store',
         const='urlcheck_errors.txt',
-        help='outputs text file for all url error that occur during program execution',
+        help='outputs text file for all url errors that occur during program execution',
         required=False,
     )
     return parser.parse_args()
@@ -81,7 +81,7 @@ def show_response(url, outfile,error=None):
     '''
     prints program output to terminal if requests option was selected
     will display request respose of url input or an error if site is unavailable 
-
+    will save errors to outfile if option selected
     '''
     try:
         response = requests.get(url)
@@ -104,6 +104,8 @@ def show_response(url, outfile,error=None):
 def make_error_file(url,error, outfile='urlcheck_errors.txt'):
     '''
     append errors to outfile
+    input: str
+    output: txt file
     '''
     with open(outfile, 'a') as f:
         f.write(f'{url}: {error}\n')
