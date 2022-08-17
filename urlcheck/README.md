@@ -70,4 +70,6 @@ This url checker has the following options:
 
 ## Inspiration
 
-Project idea originally came from https://realpython.com/site-connectivity-checker-python/. I added the additional functionality for scraping, making requests, and documenting errors.
+This project idea originally came from https://realpython.com/site-connectivity-checker-python/.
+
+Added additional functionality for scraping, making requests, and documenting errors.
