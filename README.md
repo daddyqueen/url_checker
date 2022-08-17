@@ -70,7 +70,7 @@ This url checker has the following options:
 🟢 Online ~~ "http://jup.ag/"
 ```
 
-### scrape urls and check response code
+#### scrape urls and check response code
 ```
 (venv) % python3 -m urlcheck -u jup.ag -s -r       
 🟢 Status 200 ~~ "http://jup.ag/"
