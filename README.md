@@ -31,7 +31,7 @@ This url checker has the following options:
 
 ## Sample Usage & Output
 
-* check connectivity *
+#### check connectivity
 ```
 (venv) % python3 -m urlcheck -u github.com      
 🟢 Online ~~ "http://github.com/"
@@ -41,7 +41,7 @@ This url checker has the following options:
 	Error: "[Errno 8] nodename nor servname provided, or not known" "http://bad-url.com/"
 ```
 
-* check connectivity of scraped links *
+#### check connectivity of scraped links
 ```
 (venv) % python3 -m urlcheck -u https://books.toscrape.com/ -s
 🟢 Online ~~ "https://books.toscrape.com/index.html"
@@ -50,7 +50,7 @@ This url checker has the following options:
 ...
 ```
 
-* check response code for multiple urls *
+#### check response code for multiple urls
 ```
 (venv) % python3 -m urlcheck -u github.com daddyqueen.com -r
 🟢 Status 200 ~~ "http://github.com/"
@@ -58,7 +58,7 @@ This url checker has the following options:
 	Error: "404" "http://daddyqueen.com/"
 ```
 
-* check urls from a file asynchronously	*
+#### check urls from a file asynchronously
 ```
 (venv) % python3 -m urlcheck -f sample_links.txt -a           
 ❌ Unavailable
@@ -70,7 +70,7 @@ This url checker has the following options:
 🟢 Online ~~ "http://jup.ag/"
 ```
 
-* scrape urls and check response code *
+### scrape urls and check response code
 ```
 (venv) % python3 -m urlcheck -u jup.ag -s -r       
 🟢 Status 200 ~~ "http://jup.ag/"
