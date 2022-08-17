@@ -1,38 +1,42 @@
 # link_scraper.py
+# additional files needed to run program: checker.py, cli.py, __main__.py
+
 from bs4 import BeautifulSoup
 import requests
+from urlcheck.cli import read_cli_arg, make_error_file
 
-from urlcheck.cli import read_cli_arg
-
-user_args = read_cli_arg()
-
-def scrape_links(URL=user_args.scrape):
+def scrape_links(url,outfile_bool=False):
     '''
-    scrape links from URL
-    will try to format URL if not in proper format
-    input: URL
-    output: list of all links embedded in URL
+    scrape links from url
+    will try to format url if not in proper format
+    input: url
+    output: 
+        success: list of all links embedded in url
+        error: return [] and write error to optional outfile
     '''
-    # clean up user input
-    if not URL.startswith('http'):
-        URL = 'http://' + URL
-    if not URL.endswith('/'):
-        URL = URL + '/'
+
+    # request page data
     try:
-        res = requests.get(URL)
+        res = requests.get(url)
     except Exception as e:
-        raise e
+        # res=False
+        error = str(e)
+        if outfile_bool:
+            make_error_file(url, error)
+        print(f'❌ Unavailable\n\tError: "{error}" "{url}"')
+        return []
+
     soup = BeautifulSoup(res.content, 'html.parser')
+
     link_list=[]
     for a in soup.find_all('a', href=True):
         # check format of links
-        if a['href'].startswith('http') or a['href'].startswith('www'):
+        if a['href'].startswith('http'):
             link_list.append(a['href'])
         else:
             # append relative link to base url remove leading '/'
             if a['href'].startswith('/'):
-                link_list.append(URL+a['href'][1:])
+                link_list.append(url+a['href'][1:])
+            else:
+                link_list.append(url+a['href'])
     return link_list
-if __name__=='__main__':
-    URL= input('Enter an address to scrape: ')
-    print(scrape_links(URL))
