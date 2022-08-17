@@ -48,6 +48,11 @@ This url checker has the following options:
 (venv) % python3 -m urlcheck -u https://books.toscrape.com/ -r
 🟢 Status 200 ~~ "https://books.toscrape.com/"
 
+(venv) % python3 -m urlcheck -u github.com daddyqueen.com -r
+🟢 Status 200 ~~ "http://github.com/"
+❌ Unavailable 
+	Error: "404" "http://daddyqueen.com/"
+	
 (venv) % python3 -m urlcheck -f sample_links.txt -a           
 ❌ Unavailable
 	Error: "Cannot connect to host superbadurl.com-help.u:80 ssl:default [nodename nor servname provided, or not known]" "http://superbadurl.com-help.u/"
