@@ -1,10 +1,12 @@
 # __main__.py
-# additional files needed to run program: checker.py, cli.py, link_scraper.py
+# additional files needed to run program: 
+#   checker.py, cli.py, link_scraper.py
 import asyncio
 import pathlib
 import sys
 from urlcheck.checker import is_online, is_online_async
-from urlcheck.cli import read_cli_arg, show_results, show_response, make_error_file
+from urlcheck.cli import read_cli_arg, show_results, \
+    show_response, make_error_file
 from urlcheck.link_scraper import scrape_links
 
 def main():
@@ -102,8 +104,8 @@ async def _asynchronous_check(urls, outfile):
 def _synchronous_check(urls,outfile='',req=False):
     '''
     checks urls one by one in order that they are passed
-    if req=True will perform a request for each url and display the response code
-    if req=False will determine online status for each link
+    req=True will perform request for each url & display response code
+    req=False will determine online status for each link
     output: prints results to terminal
     '''
     for url in urls:
@@ -123,7 +125,7 @@ def _synchronous_check(urls,outfile='',req=False):
 def _format_urls(urls:list) -> list:
     '''
     standardizes urls for ease of use 
-    appends 'http://' to the front and '/' to the end of urls as needed.
+    appends 'http://' to the front and '/' to the end of url as needed
     '''
     formated_urls=[]
     for url in urls:

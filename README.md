@@ -24,7 +24,7 @@ This url checker has the following options:
 
 * `-u` or `--urls` input one or more URLs and check if they're online. (will add prefix http:// to url if missing from input)
 * `-f` or `--input-file` input a file containing a list of URLs to check.
-* `-a` or `--asynchronous` runs the check asynchronously. (Do not use this option with -r or -s, those options will still run syncronously to avoid time out issues)
+* `-a` or `--asynchronous` runs the check asynchronously. (Options  -r or -s, will run syncronously to avoid time out issues)
 * `-s` or `--scrape` scrapes all url data from input url(s) (only runs synchronously)
 * `-r` or `--request` requests status code of all urls (only runs synchronously)
 * `-o` or `--output-file` outputs & appends to text file all url errors that occur during program execution (default name is 'urlcheck_errors.txt')

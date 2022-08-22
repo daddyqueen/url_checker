@@ -1,5 +1,6 @@
 # checker.py
-# additional files needed to run program: cli.py, link_scraper.py, __main__.py
+# additional files needed to run program: 
+#   cli.py, link_scraper.py, __main__.py
 import aiohttp
 import asyncio
 import requests
@@ -10,7 +11,7 @@ from urllib.parse import urlparse
 
 def is_online(url, timeout = 5):
     '''
-    Returns True if website is online, return exception as error if not.
+    Returns True if website is online, return exception as error if not
     input: URL , number of seconds to try before timeout connection
     output: bool/error
     '''
@@ -32,7 +33,7 @@ def is_online(url, timeout = 5):
 async def is_online_async(url,timeout=60):
     '''
     checks online status asynchronously
-    Returns True if website is online, return exception as error if not.
+    Returns True if website is online, return exception as error if not
     input: URL , number of seconds to try before timeout connection
     output: bool/error
     '''

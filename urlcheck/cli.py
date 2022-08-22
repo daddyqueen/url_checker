@@ -1,5 +1,6 @@
 # cli.py
-# additional files needed to run program: checker.py, link_scraper.py, __main__.py
+# additional files needed to run program: 
+#   checker.py, link_scraper.py, __main__.py
 import argparse
 import requests
 
@@ -11,7 +12,12 @@ def read_cli_arg():
         prog='urlcheck', description='check connection status of url(s)',
         # exit_on_error=False
     )
-    parser.add_argument( # get urls
+    # prevents -a and -s from running together
+    confilict_group = parser.add_mutually_exclusive_group()
+    # pull url info from -u or -f
+    input_group = parser.add_mutually_exclusive_group(required=True)
+
+    input_group.add_argument( # get urls
         '-u',
         '--urls',
         metavar='URLs',
@@ -21,7 +27,7 @@ def read_cli_arg():
         help='enter one or more URLs to check their connection status',
         required=False,
     )
-    parser.add_argument( # get urls from file
+    input_group.add_argument( # get urls from file
         '-f',
         '--input-file',
         metavar='FILE',
@@ -30,14 +36,14 @@ def read_cli_arg():
         help='read URLs from a file',
         required=False,
     )
-    parser.add_argument( # async flag True
+    confilict_group.add_argument( # async flag True
         '-a',
         '--asynchronous',
         action='store_true',
         help='check url connectivity asynchronously',
         required=False,
     )
-    parser.add_argument( # scrape flag True
+    confilict_group.add_argument( # scrape flag True
         '-s',
         '--scrape',
         action='store_true',
@@ -59,7 +65,8 @@ def read_cli_arg():
         nargs='?',
         action='store',
         const='urlcheck_errors.txt',
-        help='outputs text file for all url errors that occur during program execution',
+        help='outputs text file for all url errors that occur \
+            during program execution',
         required=False,
     )
     return parser.parse_args()
@@ -80,7 +87,7 @@ def show_results(result, url, outfile, error=''):
 def show_response(url, outfile,error=None):
     '''
     prints program output to terminal if requests option was selected
-    will display request respose of url input or an error if site is unavailable 
+    will display request respose of url input or an error  
     will save errors to outfile if option selected
     '''
     try:
@@ -88,7 +95,8 @@ def show_response(url, outfile,error=None):
         if response:
             print(f'🟢 Status {response.status_code} ~~', end=' ')
         else:
-            print(f'❌ Unavailable \n\tError: "{response.status_code}"', end=' ')
+            print(f'❌ Unavailable \n\t\
+                Error: "{response.status_code}"', end=' ')
             if outfile:
                 make_error_file(url,error,outfile)
                 print('out')
